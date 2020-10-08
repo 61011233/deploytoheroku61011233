@@ -1,0 +1,180 @@
+{% extends 'frontend/base.html' %}
+{% block title %} Home {% endblock %}
+{% block content %}
+<div class="jumbotron">
+
+
+    <html lang="en">
+        <head>
+        
+            <!-- CSS only -->
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        </head>
+        <body class="bg-light">
+            <nav class="navbar navbar-expand-md navbar-light bg-light">
+                
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        
+        
+        
+                      
+        
+
+                </div>
+            </nav>
+            
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <div class="jumbotron" style="background : url('https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80') no-repeat;  background-position: center; background-size: cover;">
+            <div class="container">
+                <h1 class="display-3 text-light">Hello, <span id="user1" class="text-warning" onClick="chengeUser()"></span><span class="text-warning">!</span></h1>
+                <p class="text-light">We use cookies and other tracking technologies to improve your browsing experience on our website, to show you personalized content and targeted ads, to analyze our website traffic, 
+                and to understand where our visitors are coming from. By browsing our website, you consent 
+                to our use of cookies and other tracking technologies.</p>
+                <p><a class="btn btn-danger btn-lg" href="#Reminder" role="button">Start hacking &raquo;</a></p>
+            </div>
+        </div>   
+        
+        <div id="Reminder"class="container mt-5">
+            <div class="h2 text-center">Reminder' <span id="user" onClick="chengeUser()"></span> </div>
+            <div class="text-center mb-4">click your name for change name!</div>
+            <span id="button"> <div class="btn btn-warning w-100 mb-3" onClick="addEvent3()"> add new event </div> </span>
+            <div id="from1"> </div>
+            <span id="list"> </span>
+        </div>
+        
+            <script>
+                var username = getCookie("username");
+                let state = false;
+        
+                checkCookie();
+                reEvent();
+        
+                document.getElementById("user").innerHTML = username
+                document.getElementById("user1").innerHTML = username
+                
+                function reEvent(){
+                    document.getElementById("list").innerHTML = ""
+                    var count3=0;
+                    for(var i=1 ; i<101 ; i++){   
+                        var count = 'list_index'+i;     
+                        if (getCookie(count) != "")  {
+                            count3++;
+                            document.getElementById("list").innerHTML +='<div style="display:grid; grid-template-columns: auto 30px 30px;" class="mt-4"><span style="font-size: 22px; margin-left:5px;">'+count3+' . '+ getCookie(count) +'</span><i class="fa fa-check-square-o" style="font-size:22px; margin-left:-19px; color:green;" onClick="deEvent('+i+')"></i><i class="fa fa-edit" style="font-size:22px; color:blue" onClick="editEvent('+i+')"></i></div> <span id="list_edit'+i+'"> </span>  '
+                        }       
+                    }
+                    if(count3==0) {
+                        document.getElementById("list").innerHTML +='<div style="display:grid; grid-template-columns: auto 30px 30px;" class="mt-4"><span style="font-size: 22px; margin-left:5px;"> click add new event !! enjoy hacking!!</span><i class="fa fa-check-square-o" style="font-size:22px; margin-left:-19px; color:green;"></i><i class="fa fa-edit" style="font-size:22px; color:blue"></i></div>'
+                        document.getElementById("list").innerHTML +='<div style="display:grid; grid-template-columns: auto 30px 30px;" class="mt-4"><span style="font-size: 22px; margin-left:5px;"> the website will use cookie becuase i am hungry!!</span><i class="fa fa-check-square-o" style="font-size:22px; margin-left:-19px; color:green;"></i><i class="fa fa-edit" style="font-size:22px; color:blue"></i></div>'
+                    }
+                }
+        
+                function editEvent(index){
+                    var editFrom = 'list_edit'+index;
+                    document.getElementById(editFrom).innerHTML = '<form class="form-inline my-2 mt-3 my-lg-0"><input id="valEdit" class="form-control" style="width:75%" type="text" placeholder="your edit.."><div class="btn btn-outline-success" style="width:25%" onClick="editEvent1('+index+')" type="submit">edit event </div></form>'
+                }
+        
+                function editEvent1(index){
+                    var editSpace = "list_edit"+index
+                    var editCookie = "list_index"+index
+                    var editVal = document.getElementById('valEdit').value
+                    document.getElementById(editSpace).innerHTML = ''
+                    setCookie(editCookie,editVal,365)
+                    reEvent();
+                }
+        
+                function deEvent(index){
+                    var count = 'list_index'+index;  
+                    setCookie(count,"",0)
+                    reEvent();
+                }
+        
+                function addEvent3(){
+                    if(!state){
+                        document.getElementById("from1").innerHTML = '<form class="form-inline my-2 mb-3 my-lg-0 align-bottom"><input id="val" class="form-control" style="width:75%" type="text" placeholder="your event.."><div class="btn btn-outline-success" style="width:25%" onClick="addEvent()" type="submit">add event </div></form> <br> '
+                        document.getElementById("button").innerHTML = '<div id="button" class="btn btn-danger w-100 mb-3" onClick="addEvent3()"> cancel </div>'
+                        state = true;
+                    }
+                    else{
+                        document.getElementById("from1").innerHTML = ''
+                        document.getElementById("button").innerHTML = '<div class="btn btn-warning w-100 mb-3" onClick="addEvent3()"> add new event </div>'
+                        state = false;
+                    }          
+                }  
+        
+                function addEvent(){
+                    var text = document.getElementById("val").value
+                    if(text == "") return;
+        
+                    for(var i=1 ; i<101 ; i++){    
+                        var nameCokie = 'list_index'+i;        
+                        if(getCookie(nameCokie) == ''){
+                            setCookie(nameCokie,text,365)
+                            i = 101;
+                        }
+                    }
+                    document.getElementById("val").value = ""
+                    reEvent();
+                }  
+        
+                function setCookie(cname, cvalue, exdays) {
+                    var d = new Date();
+                    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                    var expires = "expires="+ d.toUTCString();
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+        
+                function getCookie(cname) {
+                    var name = cname + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var ca = decodedCookie.split(';');
+                    for(var i = 0; i <ca.length; i++) {
+                        var c = ca[i];
+                        while (c.charAt(0) == ' ') {
+                            c = c.substring(1);
+                        }
+                        if (c.indexOf(name) == 0) {
+                            return c.substring(name.length, c.length);
+                        }
+                    }
+                    return "";
+                }
+        
+                function chengeUser() {
+                    username = '';
+                    checkCookie();
+                }
+        
+                function checkCookie() {
+                    if (username != "") {
+                        document.getElementById("user").innerHTML = username
+                    } else {
+                        username = prompt("Please enter your name :", "");
+                        if (username != "" && username != null) {
+                            setCookie("username", username, 365);
+                            document.getElementById("user").innerHTML = username
+                            document.getElementById("user1").innerHTML = username
+                        }
+                    }
+                }
+            </script>
+        
+        
+            <script src="/static/lib/jquery/jquery-2.2.4.js"></script>
+            <script src="/static/lib/popper/popper.min.js"></script>
+            <script src="/static/lib/bootstrap/js/bootstrap.min.js"></script>
+        
+            <!-- JS, Popper.js, and jQuery -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        
+        </body>
+        </html>
+</div>
+{% endblock %}
